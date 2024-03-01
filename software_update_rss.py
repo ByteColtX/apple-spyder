@@ -35,7 +35,7 @@ def main():
     beta_release = []
     prod_release = []
 
-    software_release_keywords = ["iOS", "iPadOS", "watchOS", "tvOS", "macOS", "Xcode"]
+    software_release_keywords = ["iOS", "iPadOS", "watchOS", "tvOS", "macOS", "visionOS", "Xcode"]
     beta_keywords = ["RC", "Release Candidate", "beta"]
 
     software_release_pattern = r'\b(' + '|'.join(software_release_keywords) + r')\b'

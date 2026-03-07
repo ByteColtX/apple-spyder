@@ -1,6 +1,6 @@
 services:
   apple-spyder:
-    build: .
+    image: bytecoltx/apple-spyder:latest
     container_name: apple-spyder
     restart: unless-stopped
     ports:

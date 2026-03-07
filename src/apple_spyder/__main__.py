@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import errno
 import logging
 import signal
 import threading
@@ -29,28 +30,43 @@ def main() -> None:
 
     scheduler = CronTaskRunner(software_releases.main, job_name="software_release_check")
     _log_startup_summary(config=config, scheduler=scheduler)
-    scheduler.start()
 
     if not config.web.enabled:
+        scheduler.start()
         logger.info("Runtime mode: scheduler-only")
         _wait_forever(scheduler)
         return
 
     logger.info("Starting web API: url=http://%s:%s", config.web.host, config.web.port)
-    server = make_server(config.web.host, config.web.port, app, handler_class=LoggingWSGIRequestHandler)
+    try:
+        server = make_server(config.web.host, config.web.port, app, handler_class=LoggingWSGIRequestHandler)
+    except OSError as exc:
+        if exc.errno == errno.EADDRINUSE:
+            logger.error("Web API failed to start: address already in use at %s:%s", config.web.host, config.web.port)
+            raise SystemExit(1) from exc
+        logger.exception("Web API failed to start")
+        raise SystemExit(1) from exc
+
+    server.timeout = 0.5
+    scheduler.start()
+    stop_event = threading.Event()
 
     def _shutdown(*_args) -> None:
+        if stop_event.is_set():
+            return
+        stop_event.set()
         logger.info("Shutting down apple-spyder...")
         scheduler.stop()
-        server.shutdown()
 
     signal.signal(signal.SIGINT, _shutdown)
     signal.signal(signal.SIGTERM, _shutdown)
 
     try:
-        server.serve_forever()
+        while not stop_event.is_set():
+            server.handle_request()
     finally:
         scheduler.stop()
+        server.server_close()
 
 
 def _log_startup_summary(*, config, scheduler: CronTaskRunner) -> None:
@@ -86,7 +102,9 @@ def _wait_forever(scheduler: CronTaskRunner) -> None:
     stop_event = threading.Event()
 
     def _stop(*_args) -> None:
-        logger.info("Received stop signal, exiting...")
+        if stop_event.is_set():
+            return
+        logger.info("Shutting down apple-spyder...")
         scheduler.stop()
         stop_event.set()
 

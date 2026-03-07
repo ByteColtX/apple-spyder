@@ -21,6 +21,8 @@ class CronTaskRunner:
         self._stop_event = threading.Event()
         self._thread: threading.Thread | None = None
         self._executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix=f"scheduler-{job_name}")
+        self._stopped = False
+        self._lock = threading.Lock()
 
     def start(self) -> None:
         config = get_scheduler_config()
@@ -43,8 +45,12 @@ class CronTaskRunner:
         )
 
     def stop(self) -> None:
-        self._stop_event.set()
-        self._executor.shutdown(wait=False, cancel_futures=True)
+        with self._lock:
+            if self._stopped:
+                return
+            self._stopped = True
+            self._stop_event.set()
+            self._executor.shutdown(wait=False, cancel_futures=True)
         logger.info("Scheduler stopped: job=%s", self._job_name)
 
     def get_next_run_time(self, base_time: datetime | None = None) -> datetime:

@@ -1,12 +1,11 @@
-FROM python:3-alpine
+FROM python:3.14-alpine
 
-ENV FLASK_APP=main.py
+WORKDIR /app
 
-WORKDIR /usr/src/app
-COPY . /usr/src/app
+COPY . /app
 
-RUN pip3 install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir uv && uv sync --frozen --no-dev
 
-EXPOSE 8888
+EXPOSE 5005
 
-CMD [ "python3", "main.py" ]
+CMD ["uv", "run", "python", "-m", "apple_spyder"]

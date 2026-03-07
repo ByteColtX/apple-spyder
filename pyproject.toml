@@ -1,0 +1,30 @@
+[project]
+name = "apple-spyder"
+version = "0.1.0"
+description = "Apple software update monitoring and notification service"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "croniter>=6.0.0",
+    "fastfeedparser==0.5.9",
+    "flask==2.3.3",
+    "python-dateutil==2.8.2",
+    "pyyaml==6.0.1",
+    "requests==2.31.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "ruff>=0.9.0",
+]
+
+[project.scripts]
+apple-spyder = "apple_spyder.__main__:main"
+
+[build-system]
+requires = ["hatchling>=1.24.0"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/apple_spyder"]

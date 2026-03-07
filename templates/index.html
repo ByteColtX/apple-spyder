@@ -1,14 +1,32 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
-<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
-<title>apple-spyder</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Apple Spyder</title>
 </head>
-<body><h2 id='welcome-to-apple-spyder'>Welcome to Apple Spyder</h2>
-<ul>
-<li><code>/apple-spyder/software-release</code>: Check Apple Developer RSS feed.</li>
-<li><code>/apple-spyder/accessory-ota-update</code>: Check for Apple accessories OTA updates.</li>
+<body>
+  <h1>Apple Spyder</h1>
+  <p>Simple web entry for Apple Spyder. The routes below are useful for manual checks, feed preview, and notification testing.</p>
 
-</ul>
+  <ul>
+    <li>
+      <a href="/apple-spyder/software-release">/apple-spyder/software-release</a>
+      — Check Apple Developer RSS feed and send notifications if new items are found.
+    </li>
+    <li>
+      <a href="/apple-spyder/software-release/feed">/apple-spyder/software-release/feed</a>
+      — Fetch current Apple Developer RSS entries.
+    </li>
+    <li>
+      <a href="/apple-spyder/accessory-ota-update">/apple-spyder/accessory-ota-update</a>
+      — Check Apple accessory OTA updates.
+    </li>
+    <li>
+      <a href="/apple-spyder/test-notify">/apple-spyder/test-notify</a>
+      — Send a test notification with the default message.
+    </li>
+  </ul>
+
 </body>
 </html>

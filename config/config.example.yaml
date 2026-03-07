@@ -1,0 +1,29 @@
+# Copy this file to config/config.yaml and fill in your real credentials.
+weibo:
+  enabled: false
+  app_key: your_app_key
+  app_secret: your_app_secret
+  redirect_uri: https://example.com/callback
+  access_token: your_access_token
+  real_ip: 127.0.0.1
+
+telegram:
+  enabled: true
+  bot_name: Your Telegram Bot
+  bot_token: 123456:your_bot_token
+  chat_ids:
+    - 123456789
+    - -1001234567890
+
+urls:
+  apple_developer_rss: https://developer.apple.com/news/releases/rss/releases.rss
+
+web:
+  enabled: true
+  host: 0.0.0.0
+  port: 5005
+
+scheduler:
+  enabled: true
+  cron_expr: "*/30 * * * *"
+  run_on_startup: true

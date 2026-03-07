@@ -1,0 +1,10 @@
+services:
+  apple-spyder:
+    build: .
+    container_name: apple-spyder
+    restart: unless-stopped
+    ports:
+      - "5005:5005"
+    volumes:
+      - ./config:/app/config
+      - ./data:/app/data

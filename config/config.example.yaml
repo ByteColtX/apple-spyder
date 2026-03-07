@@ -9,11 +9,10 @@ weibo:
 
 telegram:
   enabled: true
-  bot_name: Your Telegram Bot
   bot_token: 123456:your_bot_token
   chat_ids:
     - 123456789
-    - -1001234567890
+    - 1145141919810
 
 urls:
   apple_developer_rss: https://developer.apple.com/news/releases/rss/releases.rss

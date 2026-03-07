@@ -32,7 +32,6 @@ class WeiboConfig:
 @dataclass(frozen=True, slots=True)
 class TelegramConfig:
     enabled: bool
-    bot_name: str
     bot_token: str
     chat_ids: tuple[str, ...]
 
@@ -150,7 +149,6 @@ def _validate_weibo_config(section: dict[str, Any]) -> WeiboConfig:
 def _validate_telegram_config(section: dict[str, Any]) -> TelegramConfig:
     config = TelegramConfig(
         enabled=_require_bool(section, "enabled", "telegram.enabled"),
-        bot_name=_require_text(section, "bot_name", "telegram.bot_name"),
         bot_token=_require_text(section, "bot_token", "telegram.bot_token"),
         chat_ids=_parse_chat_ids(section),
     )

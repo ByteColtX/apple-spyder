@@ -75,9 +75,8 @@ def _log_startup_summary(*, config, scheduler: CronTaskRunner) -> None:
     logger.info("Config loaded: path=%s", CONFIG_PATH)
     logger.info("Database path: %s", DATABASE_PATH)
     logger.info(
-        "Telegram: enabled=%s bot_name=%s target_count=%s targets=%s",
+        "Telegram: enabled=%s target_count=%s targets=%s",
         config.telegram.enabled,
-        config.telegram.bot_name,
         len(config.telegram.chat_ids),
         ",".join(config.telegram.chat_ids),
     )

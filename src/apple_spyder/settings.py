@@ -37,6 +37,15 @@ class TelegramConfig:
 
 
 @dataclass(frozen=True, slots=True)
+class BarkConfig:
+    enabled: bool
+    server_url: str
+    device_key: str
+    username: str
+    password: str
+
+
+@dataclass(frozen=True, slots=True)
 class UrlsConfig:
     apple_developer_rss: str
 
@@ -59,6 +68,7 @@ class SchedulerConfig:
 class AppConfig:
     weibo: WeiboConfig
     telegram: TelegramConfig
+    bark: BarkConfig
     urls: UrlsConfig
     web: WebConfig
     scheduler: SchedulerConfig
@@ -157,6 +167,19 @@ def _validate_telegram_config(section: dict[str, Any]) -> TelegramConfig:
     return config
 
 
+def _validate_bark_config(section: dict[str, Any]) -> BarkConfig:
+    config = BarkConfig(
+        enabled=_require_bool(section, "enabled", "bark.enabled"),
+        server_url=_require_text(section, "server_url", "bark.server_url"),
+        device_key=_require_text(section, "device_key", "bark.device_key"),
+        username=_require_text(section, "username", "bark.username"),
+        password=_require_text(section, "password", "bark.password"),
+    )
+    if config.enabled and not config.server_url.startswith(("http://", "https://")):
+        raise ConfigError("Config field 'bark.server_url' must start with http:// or https://")
+    return config
+
+
 def _validate_urls_config(section: dict[str, Any]) -> UrlsConfig:
     config = UrlsConfig(
         apple_developer_rss=_require_text(section, "apple_developer_rss", "urls.apple_developer_rss"),
@@ -195,6 +218,7 @@ def get_app_config() -> AppConfig:
         _app_config_cache = AppConfig(
             weibo=_validate_weibo_config(_require_section(raw, "weibo")),
             telegram=_validate_telegram_config(_require_section(raw, "telegram")),
+            bark=_validate_bark_config(_require_section(raw, "bark")),
             urls=_validate_urls_config(_require_section(raw, "urls")),
             web=_validate_web_config(_require_section(raw, "web")),
             scheduler=_validate_scheduler_config(_require_section(raw, "scheduler")),
@@ -208,6 +232,10 @@ def get_weibo_config() -> WeiboConfig:
 
 def get_telegram_config() -> TelegramConfig:
     return get_app_config().telegram
+
+
+def get_bark_config() -> BarkConfig:
+    return get_app_config().bark
 
 
 def get_urls_config() -> UrlsConfig:

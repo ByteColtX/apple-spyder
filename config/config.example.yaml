@@ -14,6 +14,13 @@ telegram:
     - 123456789
     - 1145141919810
 
+bark:
+  enabled: false
+  server_url: https://your-bark.example.com
+  device_key: your_device_key
+  username: your_basic_auth_username
+  password: your_basic_auth_password
+
 urls:
   apple_developer_rss: https://developer.apple.com/news/releases/rss/releases.rss
 

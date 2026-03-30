@@ -81,6 +81,7 @@ def _log_startup_summary(*, config, scheduler: CronTaskRunner) -> None:
         ",".join(config.telegram.chat_ids),
     )
     logger.info("Weibo: enabled=%s", config.weibo.enabled)
+    logger.info("Bark: enabled=%s server_url=%s", config.bark.enabled, config.bark.server_url)
     logger.info("RSS source: %s", config.urls.apple_developer_rss)
     logger.info(
         "Scheduler: enabled=%s cron_expr=%s run_on_startup=%s next_run=%s",
